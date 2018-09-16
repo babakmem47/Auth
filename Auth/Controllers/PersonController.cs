@@ -26,7 +26,6 @@ namespace Auth.Controllers
         public ActionResult Index()
         {
             var personsList = _db.Persons.Include(s => s.Semat).ToList();
-            
             return View(personsList);
         }
     }
