@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AuthDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Tel" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+    <Property Name="SematId" Type="Int16" />
+    <NavigationProperty Name="Semat" Relationship="Self.FK_Persons_Semats" FromRole="Persons" ToRole="Semats" />
+  </EntityType>
+  <EntityType Name="Semat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Persons" Relationship="Self.FK_Persons_Semats" FromRole="Semats" ToRole="Persons" />
+  </EntityType>
+  <Association Name="FK_Persons_Semats">
+    <End Role="Semats" Type="Self.Semat" Multiplicity="0..1" />
+    <End Role="Persons" Type="Self.Person" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Semats">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Persons">
+        <PropertyRef Name="SematId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AuthDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Persons" EntityType="Self.Person" />
+    <EntitySet Name="Semats" EntityType="Self.Semat" />
+    <AssociationSet Name="FK_Persons_Semats" Association="Self.FK_Persons_Semats">
+      <End Role="Semats" EntitySet="Semats" />
+      <End Role="Persons" EntitySet="Persons" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

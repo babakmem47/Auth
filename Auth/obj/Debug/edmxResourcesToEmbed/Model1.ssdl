@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AuthDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Persons">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Tel" Type="nchar" MaxLength="11" />
+    <Property Name="SematId" Type="smallint" />
+  </EntityType>
+  <EntityType Name="Semats">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="25" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Persons_Semats">
+    <End Role="Semats" Type="Self.Semats" Multiplicity="0..1" />
+    <End Role="Persons" Type="Self.Persons" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Semats">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Persons">
+        <PropertyRef Name="SematId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AuthDbModelStoreContainer">
+    <EntitySet Name="Persons" EntityType="Self.Persons" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Semats" EntityType="Self.Semats" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Persons_Semats" Association="Self.FK_Persons_Semats">
+      <End Role="Semats" EntitySet="Semats" />
+      <End Role="Persons" EntitySet="Persons" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
